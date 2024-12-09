@@ -5,19 +5,19 @@ import PhotoPreviewSection from './PhotoPreview';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Entypo from '@expo/vector-icons/Entypo';
 
-export default function CameraComp() {
+export default function CameraComp({navigation, route}) {
+  const {setPhoto} = route.params
+
   const [facing, setFacing] = useState('back');
   const [permission, requestPermission] = useCameraPermissions();
   const [newPhoto, setNewPhoto] = useState(null);
   const cameraRef = useRef(null);
 
   if (!permission) {
-    // Camera permissions are still loading.
     return <View />;
   }
 
   if (!permission.granted) {
-    // Camera permissions are not granted yet.
     return (
       <View style={styles.container}>
         <Text style={styles.message}>We need your permission to show the camera</Text>
@@ -45,7 +45,7 @@ export default function CameraComp() {
   const handleRetakePhoto = ()=> setNewPhoto(null);
 
   if (newPhoto){
-    return <PhotoPreviewSection photo={newPhoto} handleRetakePhoto={handleRetakePhoto}/>
+    return <PhotoPreviewSection photo={newPhoto} setPhoto={setPhoto} handleRetakePhoto={handleRetakePhoto} navigation={navigation}/>
   }
 
   return (

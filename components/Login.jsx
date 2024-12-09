@@ -5,13 +5,35 @@ export default function Login({navigation}){
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  const handleLogin = (e)=> {
-    //VALIDATION SHIT
-    console.log(email)
-    console.log(password)
-    //IF VALIDATION IS TRUE
-    navigation.navigate('Profile')
-  }
+  const handleLogin = async () => {
+    if (!email || !password) {
+      alert('Please enter both email and password');
+      return;
+    }
+  
+    try {
+      const response = await fetch('https://dd-backend-ikt5.onrender.com/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username: email, password }),
+      });
+  
+      if (response.ok) {
+        const user = await response.json();
+        console.log('Login successful', user);
+        // Navigate to the Profile page with the user's data
+        navigation.navigate('Profile', { user });
+      } else {
+        const error = await response.json();
+        alert(error.message || 'Login failed');
+      }
+    } catch (error) {
+      console.error('Error during login:', error);
+      alert('An error occurred. Please try again later.');
+    }
+  };
 
   return(
     <View style={styles.container}>

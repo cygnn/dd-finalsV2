@@ -1,19 +1,72 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import { Text, View, StyleSheet, TextInput, TouchableOpacity, Image, Button } from 'react-native';
-import { Camera, CameraView, CameraType, useCameraPermissions } from 'expo-camera';
+import { PhotoContext } from '../context/photoContext';
 
 export default function Add({navigation}) {
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
   const [newPassword, setNewPassword] = useState(null);
+  const [photo, setPhoto] = useState(null)
+
+
+  useEffect(()=>{
+  },[photo])
+
+  const handleSave = async ()=> {
+    if (!email || !password || !newPassword) {
+      alert('Please fill all fields');
+      return;
+    }
+
+    if (password !== newPassword) {
+      alert('Passwords do not match');
+      return;
+    }
+
+    const user ={
+      username: email,
+      password: password,
+      photo: photo
+    }
+    //NOT TESTED YET
+    try {
+      const response = await fetch('https://dd-backend-ikt5.onrender.com/add-user', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(user),
+      });
+  
+      if (response.ok) {
+        const result = await response.json();
+        console.log('User added successfully:', result);
+        alert('User added successfully!');
+        navigation.navigate(Profile);
+      } else {
+        const errorData = await response.json();
+        console.error('Error:', errorData);
+        alert(`Error: ${errorData.message}`);
+      }
+    } catch (error) {
+      console.error('Network error:', error);
+      alert('An error occurred. Please try again.');
+    }
+  }
+
+  const handleCancel = ()=> {
+    navigation.navigate('Profile')
+  }
+
   return (
     <View style={{ flex: 1 }}>
         <View>
           <View style={{ justifyContent: 'center', alignItems: 'center', paddingTop: 16 }}>
             <TouchableOpacity
-              style={{ backgroundColor: 'blue', width: 120, height: 120, borderRadius: 90 }}
-              onPress={() => navigation.navigate('Camera')}
+              style={{ width: 120, height: 120, borderRadius: 90 }}
+              onPress={() => navigation.navigate('Camera',{ setPhoto })}
             >
+              {photo ? <Image style={{ width: 120, height: 120, borderRadius: 90 }} source={{ uri: `data:image/jpg;base64,${photo.base64}` }}/> : (<Text>HELLLOOO</Text>)}
             </TouchableOpacity>
           </View>
           <View style={styles.form}>
@@ -27,6 +80,7 @@ export default function Add({navigation}) {
             <Text style={styles.text}>Password</Text>
             <TextInput
               onChangeText={setPassword}
+              secureTextEntry={true}
               value={password}
               placeholderTextColor="#718096"
               style={styles.input}
@@ -34,16 +88,17 @@ export default function Add({navigation}) {
             <Text style={styles.text}>Confirm Password</Text>
             <TextInput
               onChangeText={setNewPassword}
+              secureTextEntry={true}
               value={newPassword}
               placeholderTextColor="#718096"
               style={styles.input}
             />
           </View>
           <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
-            <TouchableOpacity style={styles.saveButton}>
+            <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
               <Text style={{ color: 'white', fontWeight: 'bold' }}>SAVE</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.cancelButton}>
+            <TouchableOpacity style={styles.cancelButton} onPress={handleCancel}>
               <Text style={{ color: 'white', fontWeight: 'bold' }}>CANCEL</Text>
             </TouchableOpacity>
           </View>

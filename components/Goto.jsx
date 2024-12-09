@@ -2,9 +2,10 @@ import { Button, Text, TouchableOpacity } from "react-native"
 
 export default function Goto({navigation}){
     const handleNavigation = ()=> {
-        console.log('Hello')
+        console.log('THIS IS HEADER RIGHT!')
+        navigation.navigate('Add')
     }
     return(
-        <Button title="ADd" onPress={handleNavigation}/>
+        <Button title="Add" onPress={handleNavigation}/>
     )
 }

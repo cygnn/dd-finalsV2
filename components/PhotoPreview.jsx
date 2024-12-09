@@ -1,8 +1,16 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import { TouchableOpacity, SafeAreaView, Image, StyleSheet, View } from 'react-native';
+import { PhotoContext } from '../context/photoContext';
 
-const PhotoPreviewSection = ({ photo, handleRetakePhoto }) => {
+const PhotoPreviewSection = ({ photo, setPhoto,handleRetakePhoto, navigation }) => {
+
+    const handleSavePhoto = ()=> {
+        setPhoto(photo)
+        alert('Photo saved!');
+        setTimeout(() => navigation.goBack(), 200);
+    }
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.box}>
@@ -15,6 +23,9 @@ const PhotoPreviewSection = ({ photo, handleRetakePhoto }) => {
             <View style={styles.buttonContainer}>
                 <TouchableOpacity style={styles.button} onPress={handleRetakePhoto}>
                 <MaterialIcons name="delete-outline" size={24} color="black" />
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button} onPress={handleSavePhoto}>
+                    <FontAwesome6 name="save" size={24} color="black" />
                 </TouchableOpacity>
             </View>
         </SafeAreaView>
