@@ -10,9 +10,10 @@ export default function Edit({navigation, route}){
     const [photo, setPhoto] = useState(existingPhoto)
 
 
+
     useEffect(()=> {
         console.log('The photo is : ' + photo)
-    })
+    }, [])
 
     const handleSave = async ()=> {
         if (!email || !password || !newPassword) {
@@ -25,20 +26,22 @@ export default function Edit({navigation, route}){
             return;
         }
 
-        const updatedUser = {
-            username: email,
-            password: password,
-            photo: photo,
-        };
-
+        const formData = new FormData();
+        formData.append('photo', {
+            uri: photo,
+            type: "image/jpeg",
+            name: "image.jpg"
+        })
+        formData.append('username', email);
+        formData.append('password', password);
         //NOT TESTED YET
         try {
-            const response = await fetch(`https://dd-backend-ikt5.onrender.com/update-user/${username}`, {
+            const response = await fetch(`https://dd-backend-ikt5.onrender.com/update-user`, {
                 method: 'PUT',
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'Multipart/form-data',
                 },
-                body: JSON.stringify(updatedUser),
+                body: formData,
             });
     
             if (response.ok) {
@@ -70,7 +73,7 @@ export default function Edit({navigation, route}){
                 onPress={() => navigation.navigate('Camera',{ setPhoto })}
                 >
                     {/*TEMPORARY IMAGE SRC/SOURCE */}
-                {photo ? <Image style={{ width: 120, height: 120, borderRadius: 90 }} src={photo} source={{ uri: `data:image/jpg;base64,${photo.base64}` }}/> : (<Text>HELLLOOO</Text>)}
+                {photo ? <Image style={{ width: 120, height: 120, borderRadius: 90 }} source={{ uri: photo }}/> : (<Text>HELLLOOO</Text>)}
                 </TouchableOpacity>
             </View>
             <View style={styles.form}>

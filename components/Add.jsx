@@ -28,21 +28,33 @@ export default function Add({navigation}) {
       password: password,
       photo: photo
     }
+
+    console.log(user);
+    
+    
+    const formData = new FormData();
+    formData.append('photo', {
+      uri: photo.uri,
+      type: "image/jpeg",
+      name: "image.jpg"
+    })
+    formData.append('username', email);
+    formData.append('password', password);
     //NOT TESTED YET
     try {
       const response = await fetch('https://dd-backend-ikt5.onrender.com/add-user', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'Multipart/form-data',
         },
-        body: JSON.stringify(user),
+        body: formData,
       });
   
       if (response.ok) {
         const result = await response.json();
         console.log('User added successfully:', result);
         alert('User added successfully!');
-        navigation.navigate(Profile);
+        navigation.navigate('Profile');
       } else {
         const errorData = await response.json();
         console.error('Error:', errorData);
@@ -66,7 +78,7 @@ export default function Add({navigation}) {
               style={{ width: 120, height: 120, borderRadius: 90 }}
               onPress={() => navigation.navigate('Camera',{ setPhoto })}
             >
-              {photo ? <Image style={{ width: 120, height: 120, borderRadius: 90 }} source={{ uri: `data:image/jpg;base64,${photo.base64}` }}/> : (<Text>HELLLOOO</Text>)}
+              {photo ? <Image style={{ width: 120, height: 120, borderRadius: 90 }} source={{ uri: photo.uri }}/> : (<Text>HELLLOOO</Text>)}
             </TouchableOpacity>
           </View>
           <View style={styles.form}>

@@ -34,11 +34,11 @@ export default function CameraComp({navigation, route}) {
     if(cameraRef.current){
       const options = {
         quality: 1,
-        base64: true,
+        
         exif: false
       };
-      const takenPhoto = await cameraRef.current.takePictureAsync(options);
-      setNewPhoto(takenPhoto);
+      const takenPhoto = await cameraRef.current.takePictureAsync();
+      setNewPhoto(takenPhoto.uri);
     }
   };
 

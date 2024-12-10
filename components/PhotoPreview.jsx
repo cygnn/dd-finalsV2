@@ -7,16 +7,20 @@ import { PhotoContext } from '../context/photoContext';
 const PhotoPreviewSection = ({ photo, setPhoto,handleRetakePhoto, navigation }) => {
 
     const handleSavePhoto = ()=> {
+        
         setPhoto(photo)
         alert('Photo saved!');
         setTimeout(() => navigation.goBack(), 200);
     }
+
+    console.log(photo);
+    
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.box}>
                 <Image
                     style={styles.previewConatiner}
-                    source={{ uri: `data:image/jpg;base64,${photo.base64}` }}
+                    source={{ uri: photo }}
                 />
             </View>
 
