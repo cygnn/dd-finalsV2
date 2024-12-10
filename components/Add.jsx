@@ -1,6 +1,19 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
-import { Text, View, StyleSheet, TextInput, TouchableOpacity, Image, Button } from 'react-native';
+import {
+  Text,
+  View,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  Image,
+  KeyboardAvoidingView,
+  ScrollView,
+  Platform,
+  Keyboard,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import { PhotoContext } from '../context/photoContext';
+import blank from '../assets/blank.png'
 
 export default function Add({navigation}) {
   const [email, setEmail] = useState(null);
@@ -13,7 +26,7 @@ export default function Add({navigation}) {
   },[photo])
 
   const handleSave = async ()=> {
-    if (!email || !password || !newPassword) {
+    if (!email || !password || !newPassword || !photo) {
       alert('Please fill all fields');
       return;
     }
@@ -34,7 +47,7 @@ export default function Add({navigation}) {
     
     const formData = new FormData();
     formData.append('photo', {
-      uri: photo.uri,
+      uri: photo,
       type: "image/jpeg",
       name: "image.jpg"
     })
@@ -54,7 +67,7 @@ export default function Add({navigation}) {
         const result = await response.json();
         console.log('User added successfully:', result);
         alert('User added successfully!');
-        navigation.navigate('Profile');
+        navigation.goBack();
       } else {
         const errorData = await response.json();
         console.error('Error:', errorData);
@@ -67,18 +80,22 @@ export default function Add({navigation}) {
   }
 
   const handleCancel = ()=> {
-    navigation.navigate('Profile')
+    navigation.goBack();
   }
 
   return (
-    <View style={{ flex: 1 }}>
-        <View>
+    <KeyboardAvoidingView
+      
+      style={{ flex: 1 }}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
           <View style={{ justifyContent: 'center', alignItems: 'center', paddingTop: 16 }}>
             <TouchableOpacity
               style={{ width: 120, height: 120, borderRadius: 90 }}
-              onPress={() => navigation.navigate('Camera',{ setPhoto })}
+              onPress={() => navigation.navigate('Camera', { setPhoto })}
             >
-              {photo ? <Image style={{ width: 120, height: 120, borderRadius: 90 }} source={{ uri: photo.uri }}/> : (<Text>HELLLOOO</Text>)}
+              <Image style={styles.imageContainer} source={photo ? { uri: photo } : blank} />
             </TouchableOpacity>
           </View>
           <View style={styles.form}>
@@ -106,7 +123,7 @@ export default function Add({navigation}) {
               style={styles.input}
             />
           </View>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginBottom: 20 }}>
             <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
               <Text style={{ color: 'white', fontWeight: 'bold' }}>SAVE</Text>
             </TouchableOpacity>
@@ -114,20 +131,26 @@ export default function Add({navigation}) {
               <Text style={{ color: 'white', fontWeight: 'bold' }}>CANCEL</Text>
             </TouchableOpacity>
           </View>
-        </View>
-    </View>
+        </ScrollView>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
+  imageContainer:{
+    width: 120, 
+    height: 120, 
+    borderRadius: 90
+  },
   text: {
     marginTop: 24,
     fontSize: 16,
     fontWeight: 'bold',
   },
   input: {
-    borderColor: 'black',
-    borderWidth: 3,
+    borderColor: 'gray',
+    borderWidth: 1,
     padding: 8,
     borderRadius: 6,
   },

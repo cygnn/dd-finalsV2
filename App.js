@@ -59,14 +59,35 @@ export default function App() {
         <Stack.Screen
           name="Camera"
           component={CameraComp}
+          options={{
+            title:'PUNTANAR AND FAMILY',
+            headerStyle: {
+              backgroundColor: 'red',
+            },
+            headerTintColor: 'white',
+          }}
         />
         <Stack.Screen
           name="Preview"
           component={PhotoPreviewSection}
+          options={{
+            title:'PUNTANAR AND FAMILY',
+            headerStyle: {
+              backgroundColor: 'red',
+            },
+            headerTintColor: 'white',
+          }}
         />
         <Stack.Screen
           name="Edit"
           component={Edit}
+          options={{
+            title:'PUNTANAR AND FAMILY',
+            headerStyle: {
+              backgroundColor: 'red',
+            },
+            headerTintColor: 'white',
+          }}
         />
       </Stack.Navigator>
       </NavigationContainer>

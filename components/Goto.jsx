@@ -1,4 +1,4 @@
-import { Button, Text, TouchableOpacity } from "react-native"
+import { Button, Text, TouchableOpacity, SafeAreaView } from "react-native"
 
 export default function Goto({navigation}){
     const handleNavigation = ()=> {
@@ -6,6 +6,8 @@ export default function Goto({navigation}){
         navigation.navigate('Add')
     }
     return(
-        <Button title="Add" onPress={handleNavigation}/>
+        <SafeAreaView>
+            <Button title="Add" onPress={handleNavigation}/>
+        </SafeAreaView>
     )
 }

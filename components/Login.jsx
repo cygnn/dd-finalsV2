@@ -10,7 +10,6 @@ export default function Login({navigation}){
       alert('Please enter both email and password');
       return;
     }
-  
     try {
       const response = await fetch('https://dd-backend-ikt5.onrender.com/login', {
         method: 'POST',
@@ -75,8 +74,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   input: {
-    borderColor: 'black',
-    borderWidth: 3,
+    borderColor: 'gray',
+    borderWidth: 1,
     padding: 8,
     borderRadius: 6,
   },

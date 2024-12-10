@@ -6,7 +6,7 @@ export default function Profile({navigation}){
   const [loading, setLoading] = useState(false);
 
   const handleEdit = (item)=> {
-    navigation.navigate("Edit", {username: item.username, existingPhoto: item.photo})
+    navigation.navigate("Edit", {username: item.username, existingPhoto: item.photo, userId : item.id})
   }
 
   useEffect(() => {
@@ -50,6 +50,7 @@ export default function Profile({navigation}){
               <View style={{justifyContent: 'center' , marginLeft: 32, }}>
                 <Text>{item.username}</Text>
               </View>
+              {/*ADDED THIS BUTTON INCASE HEADER RIGHT WONT WORK || JUST REMOVE */}
               <Button title='Go to add' onPress={()=> {console.log('IN PROFILE'); navigation.navigate('Add')}}/>
           </TouchableOpacity>
         )

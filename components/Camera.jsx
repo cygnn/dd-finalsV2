@@ -1,9 +1,9 @@
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import { useState, useRef } from 'react';
-import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Button, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
 import PhotoPreviewSection from './PhotoPreview';
-import Ionicons from '@expo/vector-icons/Ionicons';
-import Entypo from '@expo/vector-icons/Entypo';
+import circle from '../assets/circle.png'
+import cameraSwitch from '../assets/camerswitch.png'
 
 export default function CameraComp({navigation, route}) {
   const {setPhoto} = route.params
@@ -53,10 +53,10 @@ export default function CameraComp({navigation, route}) {
       <CameraView style={styles.camera} facing={facing} ref={cameraRef}>
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button} onPress={takePic}>
-            <Entypo name="circle" size={64} color="black" />
+            <Image source={circle} style={{width:80, height:80}}/>
           </TouchableOpacity>
           <TouchableOpacity style={styles.absol} onPress={toggleCameraFacing}>
-            <Ionicons name="camera-reverse" size={32} color="black" />
+            <Image source={cameraSwitch} style={{width:40, height:40}}/>
           </TouchableOpacity>
         </View>
       </CameraView>
@@ -87,16 +87,15 @@ const styles = StyleSheet.create({
   },
   absol:{
     position: 'absolute',
-    backgroundColor: 'white',
     borderRadius: 999,
-    right: 20,
-    top: 45,
+    right: 25,
+    top: 50,
 
   },
   button: {
     alignSelf: 'flex-end',
     alignItems: 'center',
-    backgroundColor: 'white',
+    
     borderRadius: 9999,
     position: 'relative'
   },

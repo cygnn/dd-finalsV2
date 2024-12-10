@@ -3,6 +3,8 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import { TouchableOpacity, SafeAreaView, Image, StyleSheet, View } from 'react-native';
 import { PhotoContext } from '../context/photoContext';
+import save from '../assets/save.png';
+import del from '../assets/delete.png';
 
 const PhotoPreviewSection = ({ photo, setPhoto,handleRetakePhoto, navigation }) => {
 
@@ -25,11 +27,11 @@ const PhotoPreviewSection = ({ photo, setPhoto,handleRetakePhoto, navigation }) 
             </View>
 
             <View style={styles.buttonContainer}>
-                <TouchableOpacity style={styles.button} onPress={handleRetakePhoto}>
-                <MaterialIcons name="delete-outline" size={24} color="black" />
+                <TouchableOpacity onPress={handleRetakePhoto}>
+                    <Image source={del} style={styles.buttonItem}/>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={handleSavePhoto}>
-                    <FontAwesome6 name="save" size={24} color="black" />
+                <TouchableOpacity  onPress={handleSavePhoto}>
+                    <Image source={save} style={styles.buttonItem}/>
                 </TouchableOpacity>
             </View>
         </SafeAreaView>
@@ -59,7 +61,7 @@ const styles = StyleSheet.create({
     buttonContainer: {
         marginTop: '4%',
         flexDirection: 'row',
-        justifyContent: 'center',
+        justifyContent: 'space-around',
         width: '100%',
     },
     button: {
@@ -69,6 +71,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    buttonItem:{
+        width:40,
+        height:40,
+    }
 });
 
 export default PhotoPreviewSection;

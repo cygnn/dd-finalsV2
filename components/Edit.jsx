@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useContext } from 'react';
 import { Text, View, StyleSheet, TextInput, TouchableOpacity, Image, Button } from 'react-native';
 
 export default function Edit({navigation, route}){
-    const {username, existingPhoto} = route.params
+    const {username, existingPhoto, userId} = route.params
 
     const [email, setEmail] = useState(username);
     const [password, setPassword] = useState(null);
@@ -12,7 +12,7 @@ export default function Edit({navigation, route}){
 
 
     useEffect(()=> {
-        console.log('The photo is : ' + photo)
+        console.log('The userId is: ' + userId)
     }, [])
 
     const handleSave = async ()=> {
@@ -36,7 +36,7 @@ export default function Edit({navigation, route}){
         formData.append('password', password);
         //NOT TESTED YET
         try {
-            const response = await fetch(`https://dd-backend-ikt5.onrender.com/update-user`, {
+            const response = await fetch(`https://dd-backend-ikt5.onrender.com/update-profile/${userId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'Multipart/form-data',
@@ -48,7 +48,7 @@ export default function Edit({navigation, route}){
                 const result = await response.json();
                 console.log('User updated successfully:', result);
                 alert('User updated successfully!');
-                navigation.navigate('Profile');
+                navigation.goBack();
             } else {
                 const errorData = await response.json();
                 console.error('Error:', errorData);
@@ -61,7 +61,7 @@ export default function Edit({navigation, route}){
     }
     
     const handleCancel = ()=> {
-        navigation.navigate('Profile')
+        navigation.goBack();
     }
 
     return(
@@ -121,8 +121,8 @@ const styles = StyleSheet.create({
       fontWeight: 'bold',
     },
     input: {
-      borderColor: 'black',
-      borderWidth: 3,
+      borderColor: 'gray',
+      borderWidth: 1,
       padding: 8,
       borderRadius: 6,
     },
