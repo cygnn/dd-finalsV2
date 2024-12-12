@@ -20,6 +20,7 @@ export default function Add({navigation}) {
   const [password, setPassword] = useState(null);
   const [newPassword, setNewPassword] = useState(null);
   const [photo, setPhoto] = useState(null)
+  const [loading, setLoading] = useState(false);
 
 
   useEffect(()=>{
@@ -55,6 +56,7 @@ export default function Add({navigation}) {
     formData.append('password', password);
     //NOT TESTED YET
     try {
+      setLoading(true);
       const response = await fetch('https://dd-backend-ikt5.onrender.com/add-user', {
         method: 'POST',
         headers: {
@@ -62,7 +64,6 @@ export default function Add({navigation}) {
         },
         body: formData,
       });
-  
       if (response.ok) {
         const result = await response.json();
         console.log('User added successfully:', result);
@@ -76,6 +77,8 @@ export default function Add({navigation}) {
     } catch (error) {
       console.error('Network error:', error);
       alert('An error occurred. Please try again.');
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -124,8 +127,9 @@ export default function Add({navigation}) {
             />
           </View>
           <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginBottom: 20 }}>
-            <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
-              <Text style={{ color: 'white', fontWeight: 'bold' }}>SAVE</Text>
+            <TouchableOpacity style={styles.saveButton} disabled={loading} onPress={handleSave}>
+              {loading ? <Text style={{ color: 'white', fontWeight: 'bold' }}>LOADING</Text> : <Text style={{ color: 'white', fontWeight: 'bold' }}>SAVE</Text>}
+              
             </TouchableOpacity>
             <TouchableOpacity style={styles.cancelButton} onPress={handleCancel}>
               <Text style={{ color: 'white', fontWeight: 'bold' }}>CANCEL</Text>
